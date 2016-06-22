@@ -34,30 +34,23 @@ var showQuestion = function (question) {
 var showTopQuestion = function (question) {
 
   // clone our result template code
-  var result = $('.templates .top-answer').clone();
+  var result = $('.templates .top-answerer').clone();
 
-  // Set the question properties in result
-  var questionElem = result.find('.question-text a');
-  questionElem.attr('href', question.link);
-  questionElem.text(question.title);
+  // Set the answerer properties in result
+  var answererElem = result.find('.answerer a');
+  answererElem.attr('href', question.user.link);
+  answererElem.text(question.user.display_name);
 
-  // set the date asked property in result
-  var asked = result.find('.asked-date');
-  var date = new Date(1000 * question.creation_date);
-  asked.text(date.toString());
+  var reputation = result.find('.reputation');
+  reputation.text(question.user.reputation);
 
   // set the .viewed for question property in result
-  var viewed = result.find('.score');
-  viewed.text(question.score);
+  var postCount = result.find('.post-count');
+  postCount.text(question.post_count);
 
   // set some properties related to asker
-  var asker = result.find('.asker');
-  asker.html('<p>Name: <a target="_blank" ' +
-    'href=http://stackoverflow.com/users/' + question.owner.user_id + ' >' +
-    question.owner.display_name +
-    '</a></p>' +
-    '<p>Reputation: ' + question.owner.reputation + '</p>'
-  );
+  var score = result.find('.score');
+  score.text(question.score);
 
   return result;
 }
@@ -150,7 +143,8 @@ $(document).ready(function () {
     // zero out results if previous search has run
     $('.results').html('');
     // get the value of the tags the user submitted
-    var tags = $(this).find("input[name='tags']").val();
+    var tags = $(this).find("input[name='answerers']").val();
+
     getTopAnswers(tags);
   })
 });
